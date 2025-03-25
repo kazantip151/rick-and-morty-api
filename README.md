@@ -4,7 +4,7 @@ The Rick and Morty API allows you to access information about characters, locati
 
 ### Building the Docker Image
 
-```commandline
+```bash
 # Navigate to the project directory
 cd rick-morty-api
 
@@ -14,7 +14,7 @@ docker build -t rick-morty-api:1.0 .
 
 ### Running the Docker Container
 
-```commandline
+```bash
 # Run the container, mapping port 5000 from the container to your local machine
 docker run --name rick-morty-api -p 5000:5000 rick-morty-api:1.0
 ```
