@@ -19,6 +19,46 @@ docker build -t rick-morty-api:1.0 .
 docker run --name rick-morty-api -p 5000:5000 rick-morty-api:1.0
 ```
 
+### Deploying to Kubernetes
+
+<p>
+You can deploy this application to a Kubernetes cluster using the provided YAML files:
+</p>
+
+```bash
+# Apply the Deployment
+kubectl apply -f yamls/Deployment.yaml
+
+# Apply the Service
+kubectl apply -f yamls/Service.yaml
+
+# Apply the Ingress
+kubectl apply -f yamls/Ingress.yaml
+```
+
+### Verifying the Deployment
+
+```bash
+# Check if pods are running
+kubectl get pods
+
+# Check the service
+kubectl get svc flask-service
+
+# Check the ingress
+kubectl get ingress flask-ingress
+```
+
+### Accessing the Application
+
+<p>
+Once deployed to Kubernetes:
+</p>
+
+1. If using Minikube, run minikube ip to get the cluster IP
+2. If using a cloud provider, the Ingress may provide an external IP/hostname
+3. Access the API at http://<cluster-ip>/api/
+
 ### Accessing the API
 Once the container is running, you can access the API at:
 http://localhost:5000/api/
