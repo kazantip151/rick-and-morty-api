@@ -1,6 +1,6 @@
 # Rick and Morty API
 
-The Rick and Morty API allows you to access information about characters, locations, and episodes from the Rick and Morty show.
+The Rick and Morty API allows you to access information about characters, locations from the Rick and Morty show.
 
 ### Building the Docker Image
 
