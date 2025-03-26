@@ -48,6 +48,8 @@ kubectl get ingress flask-ingress
 
 ## Deploying with Helm chart
 
+<p>The Rick and Morty API can be deployed using the included Helm chart for more customizable deployments.</p>
+
 ```bash
 # Install the Helm chart
 helm install rick-morty-api Helm/
@@ -56,6 +58,21 @@ helm install rick-morty-api Helm/
 minikube tunnel 
 ```
 <p>We're running `minikube tunnel` for the Ingress because we're using LoadBalancer type in Helm</p>
+
+### Helm Chart Configuration
+The following table lists the configurable parameters for the Helm chart and their default values:
+
+| Parameter | Description | Default |
+|-----------|-------------|---------|
+| appName | Application name | flask |
+| replicasCount | Number of replicas | 2 |
+| container.image | Container image | rick-morty-api:1.0 |
+| container.port | Container port | 5000 |
+| service.port | Service port | 5000 |
+| service.targetPort | Target port | 5000 |
+| service.type | Service type | LoadBalancer |
+| ingress.path | Ingress path | / |
+| ingress.port | Ingress port | 5000 |
 
 ## Accessing the Application
 
