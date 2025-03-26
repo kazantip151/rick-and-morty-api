@@ -6,8 +6,8 @@ spec:
   selector:
     matchLabels:
       app: flask
-    replicas: 2
-    template:
+  replicas: 2
+  template:
       metadata:
         labels:
           app: flask
@@ -15,5 +15,6 @@ spec:
         containers:
           - name: flask-container
             image: rick-morty-api:1.0
+            imagePullPolicy: Never # For local deployment
             ports:
               - containerPort: 5000
