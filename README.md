@@ -62,7 +62,7 @@ minikube service flask-service --url
 # Forward the service port to your local machine
 kubectl port-forward service/flask-service 5000:5000
 ```
-<p>Then access the API at [http://localhost:5000/api/](http://localhost:5000/api/)</p>
+<p>Then access the API at http://localhost:5000/api/</p>
 
 ### Method 3: Using Ingress (if enabled)
 <p>If you've enabled the Ingress addon in Minikube:</p>
