@@ -2,7 +2,7 @@
 
 The Rick and Morty API allows you to access information about characters, locations from the Rick and Morty show.
 
-### Running directly with Docker (for local development)
+## Running directly with Docker (for local development)
 
 ```bash
 # Navigate to the project directory
@@ -15,7 +15,7 @@ docker build -t rick-morty-api:1.0 .
 docker run --name rick-morty-api -p 5000:5000 rick-morty-api:1.0
 ```
 
-### Deploying to Kubernetes with Minikube (for container orchestration)
+## Deploying to Kubernetes with Minikube (for container orchestration)
 
 ```bash
 # Start Minikube if not already running
@@ -46,6 +46,17 @@ kubectl get svc flask-service
 kubectl get ingress flask-ingress
 ```
 
+## Deploying with Helm chart
+
+```bash
+# Install the Helm chart
+helm install rick-morty-api Helm/
+
+# Create network routes to services deployed with LoadBalancer type and Ingress
+minikube tunnel 
+```
+<p>We're running `minikube tunnel` for the Ingress because we're using LoadBalancer type in Helm</p>
+
 ## Accessing the Application
 
 ### Method 1: Using minikube service
@@ -62,19 +73,14 @@ minikube service flask-service --url
 # Forward the service port to your local machine
 kubectl port-forward service/flask-service 5000:5000
 ```
-<p>Then access the API at http://localhost:5000/api/</p>
 
-### Method 3: Using Ingress (if enabled)
-<p>If you've enabled the Ingress addon in Minikube:</p>
+### Method 3: Using a Ingress (only with Helm)
 
 ```bash
-# Enable ingress if not already enabled
-minikube addons enable ingress
-
-# Get the Minikube IP
-minikube ip
+# Get the ingress IP
+minikube service --url flask-service
 ```
-<p>Then you can access your API at http://[minikube-ip]/ or add an entry to your hosts file.</p>
+<p>Then access the API at http://{flask-service}/api/</p>
 
 ### API Endpoints
 

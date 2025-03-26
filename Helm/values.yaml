@@ -1,0 +1,15 @@
+appName: flask
+replicasCount: 2
+container:
+    image: rick-morty-api:1.0
+    port: 5000
+
+service:
+  port: 5000
+  targetPort: 5000
+  type: LoadBalancer
+# type: NodePort
+
+ingress:
+  path: /
+  port: 5000
