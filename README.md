@@ -18,6 +18,9 @@ docker run --name rick-morty-api -p 5000:5000 rick-morty-api:1.0
 ## Deploying to Kubernetes with Minikube (for container orchestration)
 
 ```bash
+# Navigate to the project directory
+cd rick-morty-api
+
 # Start Minikube if not already running
 minikube start
 
@@ -51,6 +54,18 @@ kubectl get ingress flask-ingress
 <p>The Rick and Morty API can be deployed using the included Helm chart for more customizable deployments.</p>
 
 ```bash
+# Navigate to the project directory
+cd rick-morty-api
+
+# Start Minikube if not already running
+minikube start
+
+# Configure terminal to use Minikube's Docker daemon
+eval $(minikube docker-env)
+
+# Build the Docker image directly in Minikube's environment
+docker build -t rick-morty-api:1.0 .
+
 # Install the Helm chart
 helm install rick-morty-api Helm/
 
