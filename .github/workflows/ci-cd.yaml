@@ -1,0 +1,54 @@
+name: Test and Deploy
+
+on:
+  workflow_run:
+    workflows: ["CodeQL Advanced"]
+    types:
+      - completed
+    branches: [main]
+
+jobs:
+  test-deploy:
+    if: ${{github.event.workflow_run.conclusion == 'success'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install kind
+        uses: helm/kind-action@v1.8.0
+
+      - name: Install cluster
+        run: kind create cluster --name rick-morty-cluster
+
+      - name: Build Docker image
+        run: docker build -t rick-morty-api:1.0 .
+
+      - name: Load image into kind
+        run: kind load docker-image rick-morty-api:1.0 --name rick-morty-cluster
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f yamls/Deployment.yaml
+          kubectl apply -f yamls/Service.yaml
+          kubectl apply -f yamls/Ingress.yaml
+
+      - name: Wait for deployment
+        run: kubectl wait --for=condition=available --timeout=60s deployment/flask-deployment
+
+        # Install jq (to validate JSON responses)
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Test API endpoints
+        run: |
+          # Setup port-forwarding
+          kubectl post-forward service/flask-service 5000:5000 &
+          sleep 5
+          
+          # Test endpoints
+          curl -s http://127.0.0.1:5000/api/healthcheck | grep "healthy"
+          curl -s -X POST http://127.0.0.1:5000/api/refresh-data | grep -q "."
+          curl -s http://127.0.0.1:5000/api/characters | grep -q "."
+          curl -s http://127.0.0.1:5000/api/characters/Rick | grep -q "."
+          # curl -s http://127.0.0.1:5000/api/characters | jq
