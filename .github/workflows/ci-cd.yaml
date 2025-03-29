@@ -43,7 +43,7 @@ jobs:
       - name: Test API endpoints
         run: |
           # Setup port-forwarding
-          kubectl post-forward service/flask-service 5000:5000 &
+          kubectl port-forward service/flask-service 5000:5000 &
           sleep 5
           
           # Test endpoints
