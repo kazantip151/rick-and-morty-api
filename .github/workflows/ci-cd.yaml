@@ -47,8 +47,8 @@ jobs:
           sleep 5
           
           # Test endpoints
-          curl -s http://127.0.0.1:5000/api/healthcheck | grep "healthy"
           curl -s -X POST http://127.0.0.1:5000/api/refresh-data | grep -q "."
+          curl -s http://127.0.0.1:5000/api/healthcheck | grep "healthy"
           curl -s http://127.0.0.1:5000/api/characters | grep -q "."
           curl -s http://127.0.0.1:5000/api/characters/Rick | grep -q "."
           # curl -s http://127.0.0.1:5000/api/characters | jq

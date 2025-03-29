@@ -123,3 +123,54 @@ The API typically includes endpoints such as:
 - **GET** /api/locations/{location} - Get a specific character by location
 - **POST** /api/refresh-data - Refresh Character data
 - **GET** /api/healthcheck - Check the health of the API
+
+
+## CI/CD Workflow
+
+This project uses GitHub Actions for continuous integration and deployment. The workflow automates building, testing, and validating the Rick and Morty API.
+
+### Workflow Overview
+
+**Name:** Test and Deploy
+
+**Trigger:** The workflow runs after the CodeQL Advanced security scan completes successfully on the main branch.
+
+### Job: test-deploy
+
+This job handles the entire CI/CD pipeline in a single workflow to maintain state between steps:
+
+#### Setup Steps:
+1. **Checkout code** - Retrieves the latest code from the repository
+2. **Install kind** - Sets up a Kubernetes in Docker (KinD) environment
+3. **Install cluster** - Creates a local Kubernetes cluster named "rick-morty-cluster"
+
+#### Build and Deploy Steps:
+4. **Build Docker image** - Creates a Docker image for the Rick and Morty API
+5. **Load image into kind** - Makes the Docker image available in the Kubernetes cluster
+6. **Deploy to Kubernetes** - Applies the Kubernetes manifests:
+   - Deployment - Manages the API container instances
+   - Service - Creates internal network endpoint
+   - Ingress - Sets up external access rules
+
+#### Testing Steps:
+7. **Wait for deployment** - Ensures the API is fully deployed before testing
+8. **Install jq** - Adds JSON processing capability for testing
+9. **Test API endpoints** - Validates all API endpoints are working:
+   - POST /api/refresh-data - Tests data refresh functionality
+   - GET /api/healthcheck - Confirms API health status
+   - GET /api/characters - Verifies character data retrieval
+   - GET /api/characters/Rick - Tests character filtering capability
+
+### Security Integration
+
+The workflow only runs after the CodeQL Advanced security scan completes successfully, ensuring that:
+1. No security vulnerabilities are introduced
+2. Code quality standards are maintained
+3. The deployment process only proceeds with secure code
+
+### Workflow Benefits
+
+- **Automated Testing:** Every change is automatically tested
+- **Consistent Environments:** Uses the same Kubernetes setup for testing as production
+- **Security First:** Integrates security scanning before deployment
+- **Full API Validation:** Tests all critical endpoints to ensure functionality
